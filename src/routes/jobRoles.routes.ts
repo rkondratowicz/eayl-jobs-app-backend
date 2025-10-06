@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { JobRolesController } from "../controllers/JobRolesController.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 import { JobRolesRepository } from "../repositories/JobRolesRepository.js";
 import { JobRolesService } from "../services/JobRolesService.js";
 
@@ -10,19 +11,19 @@ export const createJobRolesRouter = (): Router => {
   const controller = new JobRolesController(service);
 
   // GET /job-roles - Get all job roles
-  router.get("/", controller.getAllJobRoles.bind(controller));
+  router.get("/", asyncHandler(controller.getAllJobRoles.bind(controller)));
 
   // GET /job-roles/:id - Get a job role by ID
-  router.get("/:id", controller.getJobRoleById.bind(controller));
+  router.get("/:id", asyncHandler(controller.getJobRoleById.bind(controller)));
 
   // POST /job-roles - Create a new job role
-  router.post("/", controller.createJobRole.bind(controller));
+  router.post("/", asyncHandler(controller.createJobRole.bind(controller)));
 
   // PUT /job-roles/:id - Update a job role
-  router.put("/:id", controller.updateJobRole.bind(controller));
+  router.put("/:id", asyncHandler(controller.updateJobRole.bind(controller)));
 
   // DELETE /job-roles/:id - Delete a job role
-  router.delete("/:id", controller.deleteJobRole.bind(controller));
+  router.delete("/:id", asyncHandler(controller.deleteJobRole.bind(controller)));
 
   return router;
 };

@@ -1,4 +1,5 @@
 import express from "express";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 const port = 3000;
@@ -12,6 +13,9 @@ import { configureRoutes } from "./routes/index.js";
 
 // Configure all routes
 configureRoutes(app);
+
+// Error handling middleware (must be last)
+app.use(errorHandler);
 
 // Start server
 app.listen(port, () => {

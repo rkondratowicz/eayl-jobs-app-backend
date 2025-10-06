@@ -9,11 +9,8 @@ export const createJobRolesRouter = (): Router => {
   const service = new JobRolesService(repository);
   const controller = new JobRolesController(service);
 
-  // GET /job-roles - Get hello world message
-  router.get("/", controller.getHelloWorld.bind(controller));
-
-  // GET /job-roles/all - Get all job roles
-  router.get("/all", controller.getAllJobRoles.bind(controller));
+  // GET /job-roles - Get all job roles
+  router.get("/", controller.getAllJobRoles.bind(controller));
 
   // GET /job-roles/:id - Get a job role by ID
   router.get("/:id", controller.getJobRoleById.bind(controller));

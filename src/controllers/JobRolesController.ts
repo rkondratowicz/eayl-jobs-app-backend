@@ -9,12 +9,6 @@ export class JobRolesController {
     this.jobRolesService = jobRolesService;
   }
 
-  public getHelloWorld(_req: Request, res: Response): void {
-    res.json({
-      message: "Hello World!",
-    });
-  }
-
   public async getAllJobRoles(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const jobRoles = await this.jobRolesService.findAll();

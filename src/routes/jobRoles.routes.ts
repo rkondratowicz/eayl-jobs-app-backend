@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { JobRolesController } from "../controllers/JobRolesController.js";
+import { JobRolesRepository } from "../repositories/JobRolesRepository.js";
 import { JobRolesService } from "../services/JobRolesService.js";
 
 export const createJobRolesRouter = (): Router => {
   const router = Router();
-  const service = new JobRolesService();
+  const repository = new JobRolesRepository();
+  const service = new JobRolesService(repository);
   const controller = new JobRolesController(service);
 
   // GET /job-roles - Get hello world message

@@ -1,10 +1,10 @@
 import type { Application } from "express";
-import { JobRolesController } from "../controllers/JobRolesController.js";
+import { createJobRolesRouter } from "./jobRoles.routes.js";
 
 export const configureRoutes = (app: Application): void => {
-  // Initialize controllers
-  const jobRolesController = new JobRolesController();
-
-  // Job Roles Routes - using as root route for hello world
-  app.use("/", jobRolesController.router);
+  // Root route for hello world
+  const jobRolesRouter = createJobRolesRouter();
+  app.use("/", jobRolesRouter);
+  // Job Roles API Routes
+  app.use("/job-roles", createJobRolesRouter());
 };

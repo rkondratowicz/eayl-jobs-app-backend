@@ -50,7 +50,7 @@ describe("JobRolesController", () => {
     res = mockResponse();
   });
 
-  describe("getAllJobRoles", () => {
+  describe("getAll", () => {
     it("should return all job roles with status 200", async () => {
       const mockJobRoles: JobRole[] = [
         {
@@ -71,7 +71,7 @@ describe("JobRolesController", () => {
 
       service.findAll.mockResolvedValue(mockJobRoles);
 
-      await controller.getAllJobRoles(req as Request, res as Response);
+      await controller.getAll(req as Request, res as Response);
 
       expect(service.findAll).toHaveBeenCalledOnce();
       expect(res.json).toHaveBeenCalledWith(mockJobRoles);
@@ -80,7 +80,7 @@ describe("JobRolesController", () => {
     it("should return empty array when no job roles exist", async () => {
       service.findAll.mockResolvedValue([]);
 
-      await controller.getAllJobRoles(req as Request, res as Response);
+      await controller.getAll(req as Request, res as Response);
 
       expect(service.findAll).toHaveBeenCalledOnce();
       expect(res.json).toHaveBeenCalledWith([]);
@@ -90,7 +90,7 @@ describe("JobRolesController", () => {
       const error = new DatabaseError("Failed to retrieve job roles");
       service.findAll.mockRejectedValue(error);
 
-      await expect(controller.getAllJobRoles(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.getAll(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.findAll).toHaveBeenCalledOnce();
       expect(res.json).not.toHaveBeenCalled();
@@ -100,14 +100,14 @@ describe("JobRolesController", () => {
       const error = new Error("Unexpected error");
       service.findAll.mockRejectedValue(error);
 
-      await expect(controller.getAllJobRoles(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.getAll(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.findAll).toHaveBeenCalledOnce();
       expect(res.json).not.toHaveBeenCalled();
     });
   });
 
-  describe("getJobRoleById", () => {
+  describe("getById", () => {
     it("should return job role by id with status 200", async () => {
       const mockJobRole: JobRole = {
         id: 1,
@@ -120,7 +120,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "1" });
       service.findById.mockResolvedValue(mockJobRole);
 
-      await controller.getJobRoleById(req as Request, res as Response);
+      await controller.getById(req as Request, res as Response);
 
       expect(service.findById).toHaveBeenCalledWith(1);
       expect(res.json).toHaveBeenCalledWith(mockJobRole);
@@ -138,7 +138,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "42" });
       service.findById.mockResolvedValue(mockJobRole);
 
-      await controller.getJobRoleById(req as Request, res as Response);
+      await controller.getById(req as Request, res as Response);
 
       expect(service.findById).toHaveBeenCalledWith(42);
       expect(res.json).toHaveBeenCalledWith(mockJobRole);
@@ -147,9 +147,7 @@ describe("JobRolesController", () => {
     it("should throw error when id parameter is missing", async () => {
       req = mockRequest({});
 
-      await expect(controller.getJobRoleById(req as Request, res as Response)).rejects.toThrow(
-        "ID parameter is required"
-      );
+      await expect(controller.getById(req as Request, res as Response)).rejects.toThrow("ID parameter is required");
 
       expect(service.findById).not.toHaveBeenCalled();
       expect(res.json).not.toHaveBeenCalled();
@@ -160,7 +158,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "999" });
       service.findById.mockRejectedValue(error);
 
-      await expect(controller.getJobRoleById(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.getById(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.findById).toHaveBeenCalledWith(999);
       expect(res.json).not.toHaveBeenCalled();
@@ -171,7 +169,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "-1" });
       service.findById.mockRejectedValue(error);
 
-      await expect(controller.getJobRoleById(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.getById(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.findById).toHaveBeenCalledWith(-1);
       expect(res.json).not.toHaveBeenCalled();
@@ -181,13 +179,13 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "abc" });
       service.findById.mockRejectedValue(new ValidationError("Invalid job role ID"));
 
-      await expect(controller.getJobRoleById(req as Request, res as Response)).rejects.toThrow();
+      await expect(controller.getById(req as Request, res as Response)).rejects.toThrow();
 
       expect(service.findById).toHaveBeenCalledWith(Number.NaN);
     });
   });
 
-  describe("createJobRole", () => {
+  describe("create", () => {
     it("should create job role with status 201", async () => {
       const newJobRole: NewJobRole = {
         title: "Software Engineer",
@@ -205,7 +203,7 @@ describe("JobRolesController", () => {
       req = mockRequest({}, newJobRole);
       service.create.mockResolvedValue(createdJobRole);
 
-      await controller.createJobRole(req as Request, res as Response);
+      await controller.create(req as Request, res as Response);
 
       expect(service.create).toHaveBeenCalledWith(newJobRole);
       expect(res.status).toHaveBeenCalledWith(201);
@@ -228,7 +226,7 @@ describe("JobRolesController", () => {
       req = mockRequest({}, newJobRole);
       service.create.mockResolvedValue(createdJobRole);
 
-      await controller.createJobRole(req as Request, res as Response);
+      await controller.create(req as Request, res as Response);
 
       expect(service.create).toHaveBeenCalledWith(newJobRole);
       expect(res.status).toHaveBeenCalledWith(201);
@@ -244,7 +242,7 @@ describe("JobRolesController", () => {
       req = mockRequest({}, newJobRole);
       service.create.mockRejectedValue(error);
 
-      await expect(controller.createJobRole(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.create(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.create).toHaveBeenCalledWith(newJobRole);
       expect(res.status).not.toHaveBeenCalled();
@@ -260,7 +258,7 @@ describe("JobRolesController", () => {
       req = mockRequest({}, newJobRole);
       service.create.mockRejectedValue(error);
 
-      await expect(controller.createJobRole(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.create(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.create).toHaveBeenCalledWith(newJobRole);
       expect(res.status).not.toHaveBeenCalled();
@@ -271,13 +269,13 @@ describe("JobRolesController", () => {
       const error = new ValidationError("Job role title is required");
       service.create.mockRejectedValue(error);
 
-      await expect(controller.createJobRole(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.create(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.create).toHaveBeenCalledWith({});
     });
   });
 
-  describe("updateJobRole", () => {
+  describe("update", () => {
     it("should update job role with status 200", async () => {
       const updates: Partial<NewJobRole> = {
         title: "Senior Software Engineer",
@@ -294,7 +292,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "1" }, updates);
       service.update.mockResolvedValue(updatedJobRole);
 
-      await controller.updateJobRole(req as Request, res as Response);
+      await controller.update(req as Request, res as Response);
 
       expect(service.update).toHaveBeenCalledWith(1, updates);
       expect(res.json).toHaveBeenCalledWith(updatedJobRole);
@@ -316,7 +314,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "1" }, updates);
       service.update.mockResolvedValue(updatedJobRole);
 
-      await controller.updateJobRole(req as Request, res as Response);
+      await controller.update(req as Request, res as Response);
 
       expect(service.update).toHaveBeenCalledWith(1, updates);
       expect(res.json).toHaveBeenCalledWith(updatedJobRole);
@@ -339,7 +337,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "1" }, updates);
       service.update.mockResolvedValue(updatedJobRole);
 
-      await controller.updateJobRole(req as Request, res as Response);
+      await controller.update(req as Request, res as Response);
 
       expect(service.update).toHaveBeenCalledWith(1, updates);
       expect(res.json).toHaveBeenCalledWith(updatedJobRole);
@@ -348,9 +346,7 @@ describe("JobRolesController", () => {
     it("should throw error when id parameter is missing", async () => {
       req = mockRequest({}, { title: "New Title" });
 
-      await expect(controller.updateJobRole(req as Request, res as Response)).rejects.toThrow(
-        "ID parameter is required"
-      );
+      await expect(controller.update(req as Request, res as Response)).rejects.toThrow("ID parameter is required");
 
       expect(service.update).not.toHaveBeenCalled();
       expect(res.json).not.toHaveBeenCalled();
@@ -361,7 +357,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "999" }, { title: "New Title" });
       service.update.mockRejectedValue(error);
 
-      await expect(controller.updateJobRole(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.update(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.update).toHaveBeenCalledWith(999, { title: "New Title" });
       expect(res.json).not.toHaveBeenCalled();
@@ -372,7 +368,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "-1" }, { title: "New Title" });
       service.update.mockRejectedValue(error);
 
-      await expect(controller.updateJobRole(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.update(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.update).toHaveBeenCalledWith(-1, { title: "New Title" });
     });
@@ -389,19 +385,19 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "1" }, {});
       service.update.mockResolvedValue(updatedJobRole);
 
-      await controller.updateJobRole(req as Request, res as Response);
+      await controller.update(req as Request, res as Response);
 
       expect(service.update).toHaveBeenCalledWith(1, {});
       expect(res.json).toHaveBeenCalledWith(updatedJobRole);
     });
   });
 
-  describe("deleteJobRole", () => {
+  describe("delete", () => {
     it("should delete job role with status 204", async () => {
       req = mockRequest({ id: "1" });
       service.delete.mockResolvedValue(undefined);
 
-      await controller.deleteJobRole(req as Request, res as Response);
+      await controller.delete(req as Request, res as Response);
 
       expect(service.delete).toHaveBeenCalledWith(1);
       expect(res.status).toHaveBeenCalledWith(204);
@@ -412,7 +408,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "42" });
       service.delete.mockResolvedValue(undefined);
 
-      await controller.deleteJobRole(req as Request, res as Response);
+      await controller.delete(req as Request, res as Response);
 
       expect(service.delete).toHaveBeenCalledWith(42);
       expect(res.status).toHaveBeenCalledWith(204);
@@ -421,9 +417,7 @@ describe("JobRolesController", () => {
     it("should throw error when id parameter is missing", async () => {
       req = mockRequest({});
 
-      await expect(controller.deleteJobRole(req as Request, res as Response)).rejects.toThrow(
-        "ID parameter is required"
-      );
+      await expect(controller.delete(req as Request, res as Response)).rejects.toThrow("ID parameter is required");
 
       expect(service.delete).not.toHaveBeenCalled();
       expect(res.status).not.toHaveBeenCalled();
@@ -434,7 +428,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "999" });
       service.delete.mockRejectedValue(error);
 
-      await expect(controller.deleteJobRole(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.delete(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.delete).toHaveBeenCalledWith(999);
       expect(res.status).not.toHaveBeenCalled();
@@ -445,7 +439,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "0" });
       service.delete.mockRejectedValue(error);
 
-      await expect(controller.deleteJobRole(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.delete(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.delete).toHaveBeenCalledWith(0);
       expect(res.status).not.toHaveBeenCalled();
@@ -456,7 +450,7 @@ describe("JobRolesController", () => {
       req = mockRequest({ id: "1" });
       service.delete.mockRejectedValue(error);
 
-      await expect(controller.deleteJobRole(req as Request, res as Response)).rejects.toThrow(error);
+      await expect(controller.delete(req as Request, res as Response)).rejects.toThrow(error);
 
       expect(service.delete).toHaveBeenCalledWith(1);
       expect(res.status).not.toHaveBeenCalled();

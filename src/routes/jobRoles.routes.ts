@@ -11,19 +11,19 @@ export const createJobRolesRouter = (): Router => {
   const controller = new JobRolesController(service);
 
   // GET /job-roles - Get all job roles
-  router.get("/", asyncHandler(controller.getAllJobRoles.bind(controller)));
+  router.get("/", asyncHandler(controller.getAll.bind(controller)));
 
   // GET /job-roles/:id - Get a job role by ID
-  router.get("/:id", asyncHandler(controller.getJobRoleById.bind(controller)));
+  router.get("/:id", asyncHandler(controller.getById.bind(controller)));
 
   // POST /job-roles - Create a new job role
-  router.post("/", asyncHandler(controller.createJobRole.bind(controller)));
+  router.post("/", asyncHandler(controller.create.bind(controller)));
 
   // PUT /job-roles/:id - Update a job role
-  router.put("/:id", asyncHandler(controller.updateJobRole.bind(controller)));
+  router.put("/:id", asyncHandler(controller.update.bind(controller)));
 
   // DELETE /job-roles/:id - Delete a job role
-  router.delete("/:id", asyncHandler(controller.deleteJobRole.bind(controller)));
+  router.delete("/:id", asyncHandler(controller.delete.bind(controller)));
 
   return router;
 };

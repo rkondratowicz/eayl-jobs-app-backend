@@ -9,12 +9,12 @@ export class JobRolesController {
     this.jobRolesService = jobRolesService;
   }
 
-  public async getAllJobRoles(_req: Request, res: Response): Promise<void> {
+  public async getAll(_req: Request, res: Response): Promise<void> {
     const jobRoles = await this.jobRolesService.findAll();
     res.json(jobRoles);
   }
 
-  public async getJobRoleById(req: Request, res: Response): Promise<void> {
+  public async getById(req: Request, res: Response): Promise<void> {
     const idParam = req.params["id"];
     if (!idParam) {
       throw new Error("ID parameter is required");
@@ -25,13 +25,13 @@ export class JobRolesController {
     res.json(jobRole);
   }
 
-  public async createJobRole(req: Request, res: Response): Promise<void> {
+  public async create(req: Request, res: Response): Promise<void> {
     const newJobRole: NewJobRole = req.body;
     const createdJobRole = await this.jobRolesService.create(newJobRole);
     res.status(201).json(createdJobRole);
   }
 
-  public async updateJobRole(req: Request, res: Response): Promise<void> {
+  public async update(req: Request, res: Response): Promise<void> {
     const idParam = req.params["id"];
     if (!idParam) {
       throw new Error("ID parameter is required");
@@ -43,7 +43,7 @@ export class JobRolesController {
     res.json(updatedJobRole);
   }
 
-  public async deleteJobRole(req: Request, res: Response): Promise<void> {
+  public async delete(req: Request, res: Response): Promise<void> {
     const idParam = req.params["id"];
     if (!idParam) {
       throw new Error("ID parameter is required");
